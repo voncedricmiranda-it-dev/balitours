@@ -13,6 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->authenticateSessions();
+        // Force HTTPS in production for secure form submission
+        if (app()->environment('production')) {
+            $middleware->trustProxies(at: '*');
+        }
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);

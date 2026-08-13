@@ -72,6 +72,11 @@ class AuthController extends Controller
             $user = Auth::user();
             $user->update(['last_login_at' => now()]);
 
+            // Role-based redirect after login
+            if ($user->role === 'admin') {
+                return redirect()->intended('/admin/dashboard');
+            }
+
             return redirect()->intended('/user/dashboard');
         }
 
