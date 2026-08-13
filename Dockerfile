@@ -81,9 +81,10 @@ RUN mkdir -p storage/framework/cache \
         bootstrap/cache \
         database
 
-# Create SQLite database and run migrations
+# Create SQLite database file (migrations will run on startup)
 RUN touch database/database.sqlite \
-    && php artisan migrate --force
+    && chown www-data:www-data database/database.sqlite \
+    && chmod 664 database/database.sqlite
 
 # NGINX configuration
 COPY docker/nginx.conf /etc/nginx/sites-available/default
@@ -91,7 +92,12 @@ COPY docker/nginx.conf /etc/nginx/sites-available/default
 # Supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Render uses port 10000 by default for web services
 EXPOSE 10000
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
