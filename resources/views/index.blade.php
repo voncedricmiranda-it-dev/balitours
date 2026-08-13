@@ -5,9 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Discover Balingasag's natural scenery, culture, and travel options from Misamis Oriental, Philippines.">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+@if(config('app.env') === 'production')
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+@endif
 <title>Balingasag — Where Nature Thrives</title>
 <link rel="icon" type="image/png" href="/Logo/BTLogo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <link rel="stylesheet" href="{{ asset('css/index.css') }}">
@@ -29,7 +35,20 @@
       <a href="#visit">Visit</a>
     </nav>
     <button type="button" class="btn btn-primary open-modal">Plan Your Visit</button>
+    <button type="button" class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
+  <nav id="navMenu" class="nav-menu" aria-label="Mobile navigation">
+    <a href="#about">About</a>
+    <a href="#attractions">Attractions</a>
+    <a href="#nature">Nature</a>
+    <a href="#culture">Culture</a>
+    <a href="#visit">Visit</a>
+    <button type="button" class="btn btn-primary open-modal nav-button">Plan Your Visit</button>
+  </nav>
 </header>
 
 <section class="hero">
@@ -213,10 +232,41 @@
 </main>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Navigation scroll effect
   const nav = document.querySelector('header.nav');
   window.addEventListener('scroll', function() {
     nav.classList.toggle('scrolled', window.scrollY > 50);
   });
+
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburgerBtn');
+  const navMenu = document.getElementById('navMenu');
+  
+  if (hamburger && navMenu) {
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+    });
+
+    // Close menu when clicking on a link
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('header.nav')) {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 });
 </script>
 </body>

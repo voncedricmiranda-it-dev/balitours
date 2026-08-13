@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="BaliTours user dashboard and account pages.">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  @if(config('app.env') === 'production')
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https:;">
+  @endif
   <title>{{ $title ?? 'BaliTours User' }}</title>
   <link rel="icon" type="image/png" href="/Logo/BTLogo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,17 +52,20 @@
             <button id="menuBtn" aria-label="Open navigation" class="rounded-lg p-2 text-forest-900 hover:bg-cream-200 lg:hidden">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <div>
-              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-600">BaliTours User</p>
-              <p class="mt-0.5 text-sm text-ink-400">@yield('page-subtitle', 'User area')</p>
+            <div class="min-w-0">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-600 truncate">BaliTours User</p>
+              <p class="mt-0.5 text-sm text-ink-400 truncate">@yield('page-subtitle', 'User area')</p>
             </div>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3">
             <button aria-label="Notifications" class="relative rounded-full p-2.5 text-forest-900 hover:bg-cream-200">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
               <span class="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-sage-400 ring-2 ring-cream-50"></span>
             </button>
-            <a href="/user/edit-profile" class="inline-flex items-center justify-center rounded-2xl bg-forest-900 px-4 py-2.5 text-sm font-semibold text-cream-50 shadow-sm hover:bg-forest-700">Account</a>
+            <a href="/user/edit-profile" class="hidden sm:inline-flex items-center justify-center rounded-2xl bg-forest-900 px-4 py-2.5 text-sm font-semibold text-cream-50 shadow-sm hover:bg-forest-700">Account</a>
+            <a href="/user/edit-profile" class="sm:hidden rounded-full bg-forest-900 p-2.5 text-cream-50 shadow-sm hover:bg-forest-700" aria-label="Account">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a4 4 0 1 1-5.66 5.66L12 12l-4 4-1 4h4l4-4 2.83-2.83A4 4 0 1 1 16.5 3.5Z"/></svg>
+            </a>
           </div>
         </div>
       </header>
@@ -69,9 +79,11 @@
     const sidebar = document.getElementById('userSidebar');
     const overlay = document.getElementById('overlay');
     const menuBtn = document.getElementById('menuBtn');
+    const closeSidebarBtn = document.getElementById('closeUserSidebar');
     function openSidebar() { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
     function closeSidebar() { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
     menuBtn.addEventListener('click', openSidebar);
+    closeSidebarBtn.addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
   </script>

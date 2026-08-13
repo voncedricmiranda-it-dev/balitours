@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if(config('app.env') === 'production')
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    @endif
     <title>Register — BaliTours</title>
     <link rel="icon" type="image/png" href="/Logo/BTLogo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,7 +114,7 @@
                         <svg class="w-5 h-5 absolute left-3.5 text-emerald-600/70 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="name@example.com"
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="name@example.com" autocomplete="email"
                             class="w-full pl-11 pr-4 py-3 bg-emerald-50/50 border border-emerald-200/80 rounded-xl text-emerald-950 placeholder-emerald-800/40 text-sm font-medium focus:bg-white focus:border-emerald-700 focus:ring-4 focus:ring-emerald-700/10 outline-none transition-all">
                     </div>
                     @error('email')
@@ -123,7 +129,7 @@
                         <svg class="w-5 h-5 absolute left-3.5 text-emerald-600/70 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
-                        <input type="password" id="password" name="password" required placeholder="••••••••" oninput="updateStrength(this.value)"
+                        <input type="password" id="password" name="password" required placeholder="••••••••" oninput="updateStrength(this.value)" autocomplete="new-password"
                             class="w-full pl-11 pr-10 py-3 bg-emerald-50/50 border border-emerald-200/80 rounded-xl text-emerald-950 placeholder-emerald-800/40 text-sm font-medium focus:bg-white focus:border-emerald-700 focus:ring-4 focus:ring-emerald-700/10 outline-none transition-all">
                         <button type="button" onclick="togglePassword('password', this)" class="absolute right-3 text-emerald-600/70 hover:text-emerald-900 transition-colors p-1" title="Toggle Password">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +156,7 @@
                         <svg class="w-5 h-5 absolute left-3.5 text-emerald-600/70 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="••••••••"
+                        <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="••••••••" autocomplete="new-password"
                             class="w-full pl-11 pr-10 py-3 bg-emerald-50/50 border border-emerald-200/80 rounded-xl text-emerald-950 placeholder-emerald-800/40 text-sm font-medium focus:bg-white focus:border-emerald-700 focus:ring-4 focus:ring-emerald-700/10 outline-none transition-all">
                         <button type="button" onclick="togglePassword('password_confirmation', this)" class="absolute right-3 text-emerald-600/70 hover:text-emerald-900 transition-colors p-1" title="Toggle Password">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

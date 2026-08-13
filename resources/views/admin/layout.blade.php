@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Municipality of Balingasag admin panel.">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  @if(config('app.env') === 'production')
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https:;">
+  @endif
   <title>{{ $title ?? 'Balingasag Admin' }}</title>
   <link rel="icon" type="image/png" href="/Logo/BTLogo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,11 +47,16 @@
 </head>
 <body class="min-h-screen bg-cream-50 text-ink-900">
   <div class="flex min-h-screen">
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full transform flex-col bg-forest-900 text-cream-100 transition-transform duration-200 lg:translate-x-0">
-      <div class="flex items-center px-6 py-6">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full transform flex-col bg-forest-900 text-cream-100 transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto lg:transform-none lg:w-64 lg:bg-forest-900 lg:text-cream-100">
+      <div class="flex items-center justify-between px-6 py-6 lg:justify-center">
         <a href="/" class="block" aria-label="BaliTour Home">
           <img src="/Logo/BTLogo.png" alt="BaliTour Logo" class="h-11 w-auto object-contain">
         </a>
+        <button id="closeSidebar" class="lg:hidden text-cream-100 hover:text-cream-50 p-2" aria-label="Close navigation">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
       <div class="mx-6 h-px bg-white/10"></div>
       <nav class="flex-1 space-y-1 overflow-y-auto px-4 py-6" aria-label="Admin navigation">
@@ -144,17 +156,20 @@
             <button id="menuBtn" aria-label="Open navigation" class="rounded-lg p-2 text-forest-900 hover:bg-cream-200 lg:hidden">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
-            <div>
-              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-600">Municipality of Balingasag · Admin</p>
-              <p class="mt-0.5 text-sm text-ink-400">@yield('page-subtitle', 'Admin panel')</p>
+            <div class="min-w-0">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-600 truncate">Municipality of Balingasag · Admin</p>
+              <p class="mt-0.5 text-sm text-ink-400 truncate">@yield('page-subtitle', 'Admin panel')</p>
             </div>
           </div>
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3">
             <button aria-label="Notifications" class="relative rounded-full p-2.5 text-forest-900 hover:bg-cream-200">
               <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
               <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-sage-400 ring-2 ring-cream-50"></span>
             </button>
-            <a href="/admin/settings" class="inline-flex items-center justify-center rounded-2xl bg-forest-900 px-4 py-2.5 text-sm font-semibold text-cream-50 shadow-sm hover:bg-forest-700">Site settings</a>
+            <a href="/admin/settings" class="hidden sm:inline-flex items-center justify-center rounded-2xl bg-forest-900 px-4 py-2.5 text-sm font-semibold text-cream-50 shadow-sm hover:bg-forest-700">Site settings</a>
+            <a href="/admin/settings" class="sm:hidden rounded-full bg-forest-900 p-2.5 text-cream-50 shadow-sm hover:bg-forest-700" aria-label="Settings">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.6V4a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.6 1H20a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+            </a>
           </div>
         </div>
       </header>
@@ -168,9 +183,11 @@
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const menuBtn = document.getElementById('menuBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
     function openSidebar() { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
     function closeSidebar() { sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); }
     menuBtn.addEventListener('click', openSidebar);
+    closeSidebarBtn.addEventListener('click', closeSidebar);
     overlay.addEventListener('click', closeSidebar);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
   </script>

@@ -1,8 +1,13 @@
-<aside id="userSidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full transform flex-col bg-forest-900 text-cream-100 transition-transform duration-200 lg:translate-x-0">
-  <div class="flex items-center px-6 py-6">
+<aside id="userSidebar" class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full transform flex-col bg-forest-900 text-cream-100 transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-auto lg:transform-none lg:w-64 lg:bg-forest-900 lg:text-cream-100">
+  <div class="flex items-center justify-between px-6 py-6 lg:justify-center">
     <a href="/" class="block" aria-label="BaliTour Home">
       <img src="/Logo/BTLogo.png" alt="BaliTour Logo" class="h-11 w-auto object-contain">
     </a>
+    <button id="closeUserSidebar" class="lg:hidden text-cream-100 hover:text-cream-50 p-2" aria-label="Close navigation">
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
   </div>
   <div class="mx-6 h-px bg-white/10"></div>
   <nav class="flex-1 space-y-1 overflow-y-auto px-4 py-6" aria-label="User navigation">

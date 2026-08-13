@@ -81,7 +81,7 @@ img {
 .wrap {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 clamp(1rem, 5%, 2.5rem);
 }
 
 /* NAV */
@@ -106,7 +106,7 @@ header.nav.scrolled {
 .nav-inner {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 40px;
+  padding: 24px clamp(1rem, 5%, 2.5rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -199,6 +199,76 @@ header.nav.scrolled .nav .btn-primary {
 .btn-light {
   background: #fff;
   color: var(--forest);
+}
+
+/* HAMBURGER MENU */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
+  margin-right: -8px;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2.5px;
+  background: var(--forest);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* MOBILE NAV MENU */
+.nav-menu {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: rgba(251, 250, 246, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  flex-direction: column;
+  padding: 20px 0;
+  z-index: 40;
+}
+
+.nav-menu.active {
+  display: flex;
+}
+
+.nav-menu a {
+  padding: 12px 40px;
+  color: var(--forest);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.nav-menu a:hover {
+  background: var(--sage-light);
+  color: var(--forest);
+}
+
+.nav-menu .nav-button {
+  margin: 8px 20px 0;
+  width: calc(100% - 40px);
 }
 
 /* HERO */
@@ -791,20 +861,56 @@ footer .foot-grid > div:first-child p {
   gap: 10px;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE - TABLET & BELOW */
 @media (max-width: 900px) {
+  /* Navigation */
   nav.links {
     display: none;
   }
 
-  .hero h1 {
-    font-size: 3rem;
+  .hamburger {
+    display: flex;
   }
 
+  .nav .btn-primary {
+    display: none;
+  }
+
+  /* Hero */
+  .hero {
+    height: auto;
+    min-height: 500px;
+    padding-left: clamp(1rem, 5%, 2rem);
+    padding-top: 100px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .scroll-tag {
+    display: none;
+  }
+
+  /* Stats */
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 32px 20px;
   }
 
+  /* About & Culture */
   .about-grid,
   .cult-grid {
     grid-template-columns: 1fr;
@@ -814,14 +920,20 @@ footer .foot-grid > div:first-child p {
   .badge {
     position: static;
     margin-top: -40px;
-    margin-left: 20px;
+    margin-left: 0;
     width: fit-content;
   }
 
+  /* Attractions */
   .att-layout {
     grid-template-columns: 1fr;
   }
 
+  .att-feature {
+    min-height: 300px;
+  }
+
+  /* Landscapes */
   .land-grid {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(5, 200px);
