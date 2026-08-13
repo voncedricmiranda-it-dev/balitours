@@ -39,6 +39,18 @@
             <p class="text-sm sm:text-base text-emerald-800/80 leading-relaxed">Register a new user account into the application database.</p>
         </div>
 
+        <!-- General Form Errors -->
+        @if ($errors->any())
+            <div class="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
+                <p class="text-sm text-rose-700 font-semibold flex items-start gap-2 mb-2">
+                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    Please fix the errors below:
+                </p>
+            </div>
+        @endif
+
         <!-- Registration Form -->
         <form action="{{ route('register') }}" method="POST" id="registerForm" class="space-y-5">
             @csrf

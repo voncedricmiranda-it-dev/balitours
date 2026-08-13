@@ -39,6 +39,18 @@
             <p class="text-sm text-emerald-800/80 leading-relaxed">Sign in using your account credentials stored in the users table.</p>
         </div>
 
+        <!-- General Form Errors -->
+        @if ($errors->has('login'))
+            <div class="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
+                <p class="text-sm text-rose-700 font-semibold flex items-start gap-2">
+                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    {{ $errors->first('login') }}
+                </p>
+            </div>
+        @endif
+
         <!-- Login Form -->
         <form action="{{ route('login') }}" method="POST" class="space-y-5">
             @csrf
