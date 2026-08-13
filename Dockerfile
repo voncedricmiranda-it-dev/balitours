@@ -16,11 +16,14 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libicu-dev \
     libpq-dev \
+    libsqlite3-dev \
+    sqlite3 \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
         pdo_pgsql \
+        pdo_sqlite \
         mbstring \
         exif \
         pcntl \
@@ -68,12 +71,19 @@ RUN mkdir -p storage/framework/cache \
     storage/framework/views \
     storage/logs \
     bootstrap/cache \
+    database \
     && chown -R www-data:www-data \
         storage \
         bootstrap/cache \
+        database \
     && chmod -R 775 \
         storage \
-        bootstrap/cache
+        bootstrap/cache \
+        database
+
+# Create SQLite database and run migrations
+RUN touch database/database.sqlite \
+    && php artisan migrate --force
 
 # NGINX configuration
 COPY docker/nginx.conf /etc/nginx/sites-available/default
